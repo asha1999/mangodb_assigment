@@ -1,0 +1,205 @@
+1.db.movies.find()
+{ _id: ObjectId("6076cf509e33ac95afd8f959"),
+  title: 'Fight club',
+  writer: 'chunk palanhniko',
+  year: '1999',
+  actor: {} }
+{ _id: ObjectId("6076e7fc9e33ac95afd8f968"),
+  title: 'Pulp Fiction',
+  writer: 'Quentin tarantino',
+  years: '1994',
+  actors: {} }
+
+2.db.movies.find({writer:"Quentin tarantino"})
+{ _id: ObjectId("6076e7fc9e33ac95afd8f968"),
+  title: 'Pulp Fiction',
+  writer: 'Quentin tarantino',
+  years: '1994',
+  actors: {} }
+{ _id: ObjectId("6076e8409e33ac95afd8f969"),
+  title: 'Inglorios Bastards',
+  writer: 'Quentin tarantino',
+  years: '2009',
+  actors: {} }
+
+4.db.movies.find({franchise:"The Hobbit"})
+{ _id: ObjectId("6076e96b9e33ac95afd8f96a"),
+  title: 'An unexpected journey',
+  writer: 'J.R.R Tolkein',
+  year: '2012',
+  franchise: 'The Hobbit' }
+{ _id: ObjectId("6076e98c9e33ac95afd8f96b"),
+  title: 'The Hobbit:The desolation of Smoug',
+  writer: 'J.R.R Tolkein',
+  year: '2013',
+  franchise: 'The Hobbit' }
+
+5.db.movies.find({$and:[{year:{$gte:"1990",$lte:"2000"}}]})
+{ _id: ObjectId("6076cf509e33ac95afd8f959"),
+  title: 'Fight club',
+  writer: 'chunk palanhniko',
+  year: '1999',
+  actor: {} }
+
+6.db.movies.find({$or:[{year:{$lte:"2000"}},{year:{$gte:"2010"}}]})
+{ _id: ObjectId("6076cf509e33ac95afd8f959"),
+  title: 'Fight club',
+  writer: 'chunk palanhniko',
+  year: '1999',
+  actor: {} }
+{ _id: ObjectId("6076e96b9e33ac95afd8f96a"),
+  title: 'An unexpected journey',
+  writer: 'J.R.R Tolkein',
+  year: '2012',
+  franchise: 'The Hobbit' }
+{ _id: ObjectId("6076e98c9e33ac95afd8f96b"),
+  title: 'The Hobbit:The desolation of Smoug',
+  writer: 'J.R.R Tolkein',
+  year: '2013',
+  franchise: 'The Hobbit' }
+
+7.db.movies.updateMany({title:"An unexpected journey"},{$set:{synopsis:"A reluctant hobbit,Bilbo Baggins,sets out lonely to the mountain"}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+db.movies.find({title:"An unexpected journey"})
+{ _id: ObjectId("6076e96b9e33ac95afd8f96a"),
+  title: 'An unexpected journey',
+  writer: 'J.R.R Tolkein',
+  year: '2012',
+  franchise: 'The Hobbit',
+  synopsis: 'A reluctant hobbit,Bilbo Baggins,sets out lonely to the mountain' }
+
+8.db.movies.updateMany({title:"The Hobbit:The desolation of Smoug"},{$set:{synopsis:"The dwarfs along with Bilbo Baggins and gundelf the grey continue to the quest"}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+
+9.db.movies.updateMany({title:"Pulp Fiction"},{$set:{writer:"Samuel L jackson"}})
+{ acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0 }
+
+relationships
+1.db.users.find()
+{ _id: ObjectId("6076dde89e33ac95afd8f960"),
+  username: 'goodguygrey',
+  firstname: 'goodguy',
+  lastname: 'grey' }
+{ _id: ObjectId("6076de399e33ac95afd8f961"),
+  username: 'ScumbagSteve',
+  fullname: { first: 'Scumbag', last: 'Steve' } }
+
+2.db.users.find()
+{ _id: ObjectId("6076dde89e33ac95afd8f960"),
+  username: 'goodguygrey',
+  firstname: 'goodguy',
+  lastname: 'grey' }
+{ _id: ObjectId("6076de399e33ac95afd8f961"),
+  username: 'ScumbagSteve',
+  fullname: { first: 'Scumbag', last: 'Steve' } }
+
+3.db.posts.find({username:"goodguygrey"})
+{ _id: ObjectId("6076e01f9e33ac95afd8f963"),
+  username: 'goodguygrey',
+  title: 'steals your identity',
+  body: 'raises your credit score' }
+{ _id: ObjectId("6076e0399e33ac95afd8f964"),
+  username: 'goodguygrey',
+  title: 'reports a bug in your code',
+  body: 'sends you a pull request' }
+
+4.db.posts.find({username:"ScumbagSteve"})
+{ _id: ObjectId("6076e0539e33ac95afd8f965"),
+  username: 'ScumbagSteve',
+  title: 'borrows something',
+  body: 'sells it' }
+{ _id: ObjectId("6076e06d9e33ac95afd8f966"),
+  username: 'ScumbagSteve',
+  title: 'borrows everything',
+  body: 'the end' }
+
+5.db.comments.find()
+{ _id: ObjectId("6076d1589e33ac95afd8f95a"),
+  username: 'goodguygrey',
+  comment: 'Hope you got a good deal',
+  post: '[post_obj_id]',
+  where: '[post_obj_id]is the objectid of post document:"Borrows Everything' }
+{ _id: ObjectId("6076d26d9e33ac95afd8f95b"),
+  username: 'goodguygrey',
+  comment: 'What\'s mine is yours',
+  post: '[post_obj_id]',
+  write: '[post_obj_id]is the objectid of post document:"Borrows Everything' }
+
+6.db.comments.find({username:"goodguygrey"})
+{ _id: ObjectId("6076d1589e33ac95afd8f95a"),
+  username: 'goodguygrey',
+  comment: 'Hope you got a good deal',
+  post: '[post_obj_id]',
+  where: '[post_obj_id]is the objectid of post document:"Borrows Everything' }
+{ _id: ObjectId("6076d26d9e33ac95afd8f95b"),
+  username: 'goodguygrey',
+  comment: 'What\'s mine is yours',
+  post: '[post_obj_id]',
+  write: '[post_obj_id]is the objectid of post document:"Borrows Everything' }
+
+7.db.comments.find({username:"ScumbagSteve"})
+{ _id: ObjectId("6076d3e69e33ac95afd8f95e"),
+  username: 'ScumbagSteve',
+  comment: 'It still isn\'t clean',
+  post: '[post_obj_id]',
+  write: '[post_obj_id]is the objectid of post document:"passess out at party' }
+{ _id: ObjectId("6076d4af9e33ac95afd8f95f"),
+  username: 'ScumbagSteve',
+  comment: 'Denied your PR cause I found a hack',
+  post: '[post_obj_id]',
+  write: '[post_obj_id]is the objectid of post document:"reports a bug in your
+
+delete documents
+
+1.db.movies.deleteOne({title:"avatar"})
+{ acknowledged: true, deletedCount: 1 }
+
+2.db.movies.deleteOne({title:"Pee wee herman\'s big adventure"})
+{ acknowledged: true, deletedCount: 1 }
+
+
+Text search
+
+1.db.movies.find({synopsis:/.*Bilbo.*/})
+{ _id: ObjectId("6076e96b9e33ac95afd8f96a"),
+  title: 'An unexpected journey',
+  writer: 'J.R.R Tolkein',
+  year: '2012',
+  franchise: 'The Hobbit',
+  synopsis: 'A reluctant hobbit,Bilbo Baggins,sets out lonely to the mountain' }
+{ _id: ObjectId("6076e98c9e33ac95afd8f96b"),
+  title: 'The Hobbit:The desolation of Smoug',
+  writer: 'J.R.R Tolkein',
+  year: '2013',
+  franchise: 'The Hobbit',
+  synopsis: 'The dwarfs along with Bilbo Baggins and gundelf the 
+
+2.db.movies.find({synopsis:/.*gundelf.*/})
+{ _id: ObjectId("6076e98c9e33ac95afd8f96b"),
+  title: 'The Hobbit:The desolation of Smoug',
+  writer: 'J.R.R Tolkein',
+  year: '2013',
+  franchise: 'The Hobbit',
+  synopsis: 'The dwarfs along with Bilbo Baggins and gundelf the grey continue to the quest' 
+
+4.db.movies.find({$or:[{synopsis:/.*dwarves.*/},{synopsis:/.*hobbit.*/}]})
+{ _id: ObjectId("6076e96b9e33ac95afd8f96a"),
+  title: 'An unexpected journey',
+  writer: 'J.R.R Tolkein',
+  year: '2012',
+  franchise: 'The Hobbit',
+  synopsis: 'A reluctant hobbit,Bilbo Baggins,sets out lonely to the mountain' }
+
+5.db.movies.find({$and:[{synopsis:/.*gold.*/},{synopsis:/.*dragon.*/}]})
