@@ -1,0 +1,156 @@
+use population
+'switched to db population'
+db.createCollection("Zipcodes")
+{ ok: 1 }
+show collections
+Zipcodes
+
+1.db.Zipcodes.find({"city":"ATLANTA","state":"GA"},{_id:0})
+{ city: 'ATLANTA',
+  loc: [ -84.388846, 33.752504 ],
+  pop: 1845,
+  state: 'GA' }
+{ city: 'ATLANTA',
+  loc: [ -84.385145, 33.831963 ],
+  pop: 19122,
+  state: 'GA' }
+{ city: 'ATLANTA',
+  loc: [ -84.351418, 33.786027 ],
+  pop: 20081,
+  state: 'GA' }
+
+2.db.Zipcodes.aggregate([{$match:{city:"ATLANTA"}},{$match:{state:"GA"}}])
+{ _id: '30303',
+  city: 'ATLANTA',
+  loc: [ -84.388846, 33.752504 ],
+  pop: 1845,
+  state: 'GA' }
+{ _id: '30305',
+  city: 'ATLANTA',
+  loc: [ -84.385145, 33.831963 ],
+  pop: 19122,
+  state: 'GA' }
+{ _id: '30306',
+  city: 'ATLANTA',
+  loc: [ -84.351418, 33.786027 ],
+  pop: 20081,
+  state: 'GA' }
+{ _id: '30307',
+  city: 'ATLANTA',
+  loc: [ -84.335957, 33.769138 ],
+  pop: 16330,
+  state: 'GA' }
+{ _id: '30308',
+  city: 'ATLANTA',
+  loc: [ -84.375744, 33.771839 ],
+  pop: 8549,
+  state: 'GA' }
+{ _id: '30309',
+  city: 'ATLANTA',
+  loc: [ -84.388338, 33.798407 ],
+  pop: 14766,
+  state: 'GA' }
+3.db.Zipcodes.aggregate([{$group:{_id:{"city":"ATLANTA"}}},{$count:"Zipcodes"}])
+{ Zipcodes: 1 }
+(or)
+
+4.db.Zipcodes.aggregate([{$group:{_id:"$ATLANTA",total:{$sum:"$pop"}}}])
+{ _id: null, total: 248408400 }
+
+5.db.Zipcodes.aggregate([{$group:{_id:"$state",total:{$sum:"$pop"}}}])
+{ _id: 'MT', total: 798948 }
+{ _id: 'AR', total: 2350725 }
+{ _id: 'MO', total: 5110648 }
+{ _id: 'CO', total: 3293755 }
+{ _id: 'RI', total: 1003218 }
+{ _id: 'GA', total: 6478216 }
+{ _id: 'AL', total: 4040587 }
+{ _id: 'HI', total: 1108229 }
+{ _id: 'NJ', total: 7730188 }
+{ _id: 'MD', total: 4781379 }
+{ _id: 'KS', total: 2475285 }
+
+6.db.Zipcodes.aggregate([{$sort:{pop:-1}}])
+{ _id: '60623',
+  city: 'CHICAGO',
+  loc: [ -87.7157, 41.849015 ],
+  pop: 112047,
+  state: 'IL' }
+{ _id: '11226',
+  city: 'BROOKLYN',
+  loc: [ -73.956985, 40.646694 ],
+  pop: 111396,
+  state: 'NY' }
+{ _id: '10021',
+  city: 'NEW YORK',
+  loc: [ -73.958805, 40.768476 ],
+  pop: 106564,
+  state: 'NY' }
+{ _id: '10025',
+  city: 'NEW YORK',
+  loc: [ -73.968312, 40.797466 ],
+  pop: 100027,
+  state: 'NY' }
+{ _id: '90201',
+  city: 'BELL GARDENS',
+  loc: [ -118.17205, 33.969177 ],
+  pop: 99568,
+  state: 'CA' }
+
+7.db.Zipcodes.aggregate([{$limit:3},{$sort:{pop:-1}}])
+{ _id: '01002',
+  city: 'CUSHMAN',
+  loc: [ -72.51565, 42.377017 ],
+  pop: 36963,
+  state: 'MA' }
+{ _id: '01001',
+  city: 'AGAWAM',
+  loc: [ -72.622739, 42.070206 ],
+  pop: 15338,
+  state: 'MA' }
+{ _id: '01005',
+  city: 'BARRE',
+  loc: [ -72.108354, 42.409698 ],
+  pop: 4546,
+  state: 'MA' }
+     (or)
+db.Zipcodes.aggregate([{$limit:3},{$group:{_id:{pop:"$pop",state:"$state"}}},{$sort:{"_id.pop":-1,"_id.state":-1}}])
+{ _id: { pop: 36963, state: 'MA' } }
+{ _id: { pop: 15338, state: 'MA' } }
+{ _id: { pop: 4546, state: 'MA' } }
+
+8.db.Zipcodes.aggregate([{$group:{_id:{city:"$city"},total:{$sum:"$pop"}}}])
+{ _id: { city: 'HARRISONVILLE' }, total: 13652 }
+{ _id: { city: 'DAUPHIN ISLAND' }, total: 824 }
+{ _id: { city: 'WEST LIMA' }, total: 3280 }
+{ _id: { city: 'UTE' }, total: 567 }
+{ _id: { city: 'LAS VEGAS' }, total: 617124 }
+{ _id: { city: 'ARREY' }, total: 555 }
+{ _id: { city: 'PEAR VALLEY' }, total: 110 }
+
+9.db.Zipcodes.aggregate([{$sort:{pop:-1,city:-1}}])
+{ _id: '60623',
+  city: 'CHICAGO',
+  loc: [ -87.7157, 41.849015 ],
+  pop: 112047,
+  state: 'IL' }
+{ _id: '11226',
+  city: 'BROOKLYN',
+  loc: [ -73.956985, 40.646694 ],
+  pop: 111396,
+  state: 'NY' }
+
+10.db.Zipcodes.aggregate([{$limit:3},{$group:{_id:{pop:"$pop",city:"$city"}}},{$sort:{"_id.pop":-1,"_id.city":-1}}])
+{ _id: { pop: 36963, city: 'CUSHMAN' } }
+{ _id: { pop: 15338, city: 'AGAWAM' } }
+{ _id: { pop: 4546, city: 'BARRE' } }
+
+11.db.Zipcodes.aggregate([{$limit:3},{$group:{_id:{city:"$city"}}},{$sort:{"_id.city":-1}}])
+{ _id: { city: 'CUSHMAN' } }
+{ _id: { city: 'BARRE' } }
+{ _id: { city: 'AGAWAM' } }
+
+13.db.Zipcodes.aggregate([{$limit:3},{$group:{_id:"$city",avgpop:{$avg:"$pop"}}},{$sort:{"_id.city":-1}}])
+{ _id: 'AGAWAM', avgpop: 15338 }
+{ _id: 'CUSHMAN', avgpop: 36963 }
+{ _id: 'BARRE', avgpop: 4546 }
